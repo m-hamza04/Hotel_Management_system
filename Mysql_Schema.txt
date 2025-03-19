@@ -1,0 +1,85 @@
+CREATE DATABASE  hotel_db;
+USE hotel_db;
+
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE customers (
+    customerID VARCHAR(50) PRIMARY KEY,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    address VARCHAR(100),
+    mobile VARCHAR(20),
+    gender VARCHAR(10),
+    email VARCHAR(50),
+    nationality VARCHAR(30),
+    idType VARCHAR(20)
+);
+
+
+-- Rooms Table
+CREATE TABLE rooms (
+    roomNo VARCHAR(30) PRIMARY KEY,
+    roomType VARCHAR(30),
+    price DOUBLE,
+    availability BOOLEAN DEFAULT 1
+);
+
+-- Bookings Table
+CREATE TABLE bookings (
+    bookingID INT AUTO_INCREMENT PRIMARY KEY,
+    customerID VARCHAR(50),
+    roomNo VARCHAR(30),
+    checkinDate DATE,
+    checkoutDate DATE,
+    FOREIGN KEY (customerID) REFERENCES customers(customerID) ON DELETE CASCADE,
+    FOREIGN KEY (roomNo) REFERENCES rooms(roomNo) ON DELETE CASCADE
+);
+CREATE TABLE details (
+    bookingID INT PRIMARY KEY,
+    customerID VARCHAR(50),
+    roomNo VARCHAR(30),
+    FOREIGN KEY (bookingID) REFERENCES bookings(bookingID) ON DELETE CASCADE,
+    FOREIGN KEY (customerID) REFERENCES customers(customerID),
+    FOREIGN KEY (roomNo) REFERENCES rooms(roomNo)
+);
+-- TRIGGER: Update room availability when a booking is inserted
+DELIMITER //
+CREATE TRIGGER after_booking_insert
+AFTER INSERT ON bookings
+FOR EACH ROW
+BEGIN
+    UPDATE rooms
+    SET availability = 0  -- Mark room as unavailable
+    WHERE roomNo = NEW.roomNo;
+END;
+//
+DELIMITER ;
+
+-- TRIGGER: Update room availability when a booking is deleted
+DELIMITER //
+CREATE TRIGGER after_booking_delete
+AFTER DELETE ON bookings
+FOR EACH ROW
+BEGIN
+    UPDATE rooms
+    SET availability = 1  -- Mark room as available
+    WHERE roomNo = OLD.roomNo;
+END;
+//
+DELIMITER ;
+
+INSERT INTO rooms (roomNo, roomType, price, availability) VALUES
+('101', 'DELUXE', 200.00, 1),
+('102', 'DELUXE', 200.00, 1),
+('103', 'SUITE', 250.00, 1),
+('104', 'SUITE', 250.00, 1),
+('105', 'SUITE', 250.00, 1),
+('106', 'STANDARD', 150.00, 1),
+('107', 'STANDARD', 150.00, 1),
+('108', 'STANDARD', 150.00, 1);
+

@@ -1,0 +1,10 @@
+﻿  Source.cpp
+C:\Users\Hamza\Desktop\Mysql\Source.cpp(55,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Hamza\Desktop\Mysql\Source.cpp(350,16): warning C4244: 'initializing': conversion from 'uint64_t' to 'int', possible loss of data
+     Creating library C:\Users\Hamza\Desktop\Mysql\x64\Release\Mysql.lib and object C:\Users\Hamza\Desktop\Mysql\x64\Release\Mysql.exp
+  Generating code
+  3 of 221 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    8 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Mysql.vcxproj -> C:\Users\Hamza\Desktop\Mysql\x64\Release\Mysql.exe
